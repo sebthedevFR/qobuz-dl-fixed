@@ -19,29 +19,33 @@ Search, explore and download Lossless and Hi-Res music from [Qobuz](https://www.
 
 ## Getting started
 
-> You'll need an **active subscription**
+> You'll need an **active subscription**. Do **not** `pip install qobuz-dl` from PyPI — that's the old version that can no longer log in. Install this fork from source.
 
-#### Install qobuz-dl with pip
-##### Linux / MAC OS
-```
-pip3 install --upgrade qobuz-dl
-```
-##### Windows
-```
-pip3 install windows-curses
-pip3 install --upgrade qobuz-dl
-```
-#### Run qobuz-dl and enter your credentials
-##### Linux / MAC OS
-```
-qobuz-dl
-```
-##### Windows
-```
-qobuz-dl.exe
+### Install (Windows)
+
+Clone the repo, then install it into a virtual environment:
+
+```powershell
+git clone https://github.com/sebthedevFR/qobuz-dl-fixed.git
+cd qobuz-dl-fixed
+py -m venv .venv
+.venv\Scripts\python -m pip install windows-curses -e .
 ```
 
-> If something fails, run `qobuz-dl -r` to reset your config file.
+Run it with `.venv\Scripts\qobuz-dl` (or activate the venv with `.venv\Scripts\Activate.ps1`, then just `qobuz-dl`).
+
+### Install (Linux / macOS)
+
+```bash
+git clone https://github.com/sebthedevFR/qobuz-dl-fixed.git
+cd qobuz-dl-fixed
+python3 -m venv .venv
+.venv/bin/python -m pip install -e .
+```
+
+### Sign in
+
+This fork uses a browser token instead of email/password — see [Token sign-in](#token-sign-in-patched-fork-windows) below. `qobuz-dl -r` still works for the other settings, but don't use it for the token (it hashes what you type).
 
 ## Examples
 
