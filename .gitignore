@@ -1,5 +1,5 @@
 Qobuz Downloads
 __pycache__
-qobuz_dl.egg-info/
+*.egg-info/
 Qobuz Downloads/
 .venv/
