@@ -1,4 +1,5 @@
 # qobuz-dl
+> **Patched fork (0.9.9.10.post1).** Qobuz stopped accepting email and password logins from this tool, so sign-in now uses a `user_auth_token` copied from the browser. See [Token sign-in](#token-sign-in-patched-fork-windows).
 Search, explore and download Lossless and Hi-Res music from [Qobuz](https://www.qobuz.com/). It *just works*™ (2025).
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=VZWSWVGZGJRMU&source=url)
 
@@ -175,3 +176,12 @@ Attributes, methods and parameters have been named as self-explanatory as possib
 ## Disclaimer
 * This tool was written for educational purposes. I will not be responsible if you use this program in bad faith. By using it, you are accepting the [Qobuz API Terms of Use](https://static.qobuz.com/apps/api/QobuzAPI-TermsofUse.pdf).
 * `qobuz-dl` is not affiliated with Qobuz
+
+
+## Token sign-in (patched fork, Windows)
+
+1. Install (this repository is private, so download it rather than installing by URL): on GitHub click **Code > Download ZIP**, then run `py -m pip install --force-reinstall "$env:USERPROFILE\Downloads\qobuz-dl-fixed-master.zip"`
+2. Sign in at play.qobuz.com and play a track. Press F12, open the Network tab, filter by `user/login`, click the request, open Response and copy `user_auth_token`.
+3. Put the token in the `password` line of `%APPDATA%\qobuz-dl\config.ini` with PowerShell. Do **not** use `qobuz-dl -r` for this, because it hashes whatever you type.
+   `(Get-Content "$env:APPDATA\qobuz-dl\config.ini") -replace '^password = .*', 'password = PASTE_TOKEN_HERE' | Set-Content "$env:APPDATA\qobuz-dl\config.ini"`
+4. Each run refreshes the token and saves it back. If it expires, repeat steps 2 and 3.

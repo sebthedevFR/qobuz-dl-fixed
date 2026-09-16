@@ -2,8 +2,11 @@
 # of qopy, originally written by Sorrow446. All credits to the
 # original author.
 
+import configparser
 import hashlib
 import logging
+import os
+import re
 import time
 
 import requests
@@ -19,6 +22,30 @@ from qobuz_dl.color import GREEN, YELLOW
 
 RESET = "Reset your credentials with 'qobuz-dl -r'"
 
+# Same location rules as qobuz_dl/cli.py (APPDATA on Windows).
+if os.name == "nt":
+    CONFIG_FILE = os.path.join(os.environ.get("APPDATA", ""), "qobuz-dl", "config.ini")
+else:
+    CONFIG_FILE = os.path.join(os.environ.get("HOME", ""), ".config", "qobuz-dl", "config.ini")
+
+TOKEN_HELP = (
+    "Get a fresh token: sign in at play.qobuz.com, play a track, open developer tools (F12),\n"
+    "Network tab, filter 'user/login', click the request, Response, copy user_auth_token.\n"
+    f"Paste it as the password line in {CONFIG_FILE}\n"
+    "Do NOT use 'qobuz-dl -r' for this: it scrambles whatever you type."
+)
+
+
+def save_token(token):
+    if not os.path.isfile(CONFIG_FILE):
+        return
+    c = configparser.ConfigParser()
+    c.read(CONFIG_FILE)
+    c["DEFAULT"]["password"] = token
+    with open(CONFIG_FILE, "w") as f:
+        c.write(f)
+    logger.info(f"{GREEN}Token refreshed and saved.")
+
 logger = logging.getLogger(__name__)
 
 
@@ -32,8 +59,6 @@ class Client:
             {
                 "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:83.0) Gecko/20100101 Firefox/83.0",
                 "X-App-Id": self.id,
-                "Content-Type": "application/json;charset=UTF-8"
-
             }
         )
         self.base = "https://www.qobuz.com/api.json/0.2/"
@@ -123,13 +148,31 @@ class Client:
         return r.json()
 
     def auth(self, email, pwd):
-        usr_info = self.api_call("user/login", email=email, pwd=pwd)
+        # Qobuz replaced email and password login with a browser sign-in.
+        # The "password" in config.ini now holds a user_auth_token copied from
+        # the browser; Qobuz refreshes it here and we save the new one back.
+        if re.fullmatch(r"[0-9a-f]{32}", pwd or ""):
+            raise AuthenticationError(
+                "config.ini still holds your old hashed password, not a token.\n"
+                + TOKEN_HELP
+            )
+        self.session.headers.update({"X-User-Auth-Token": pwd})
+        r = self.session.post(self.base + "user/login", data={"extra": "partner"})
+        if r.status_code == 401:
+            raise AuthenticationError("Token expired or invalid.\n" + TOKEN_HELP)
+        elif r.status_code == 400:
+            raise InvalidAppIdError("Invalid app id.\n" + RESET)
+        r.raise_for_status()
+        usr_info = r.json()
         if not usr_info["user"]["credential"]["parameters"]:
             raise IneligibleError("Free accounts are not eligible to download tracks.")
         self.uat = usr_info["user_auth_token"]
         self.session.headers.update({"X-User-Auth-Token": self.uat})
         self.label = usr_info["user"]["credential"]["parameters"]["short_label"]
+        logger.info(f"{GREEN}Logged: OK")
         logger.info(f"{GREEN}Membership: {self.label}")
+        if self.uat != pwd:
+            save_token(self.uat)
 
     def multi_meta(self, epoint, key, id, type):
         total = 1
