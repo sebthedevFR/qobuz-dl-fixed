@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-pkg_name = "qobuz-dl"
+pkg_name = "qodl"
 
 
 def read_file(fname):
@@ -30,8 +30,7 @@ setup(
     install_requires=requirements,
     entry_points={
         "console_scripts": [
-            "qobuz-dl = qobuz_dl:main",
-            "qdl = qobuz_dl:main",
+            "qodl = qobuz_dl:main",
         ],
     },
     packages=find_packages(),

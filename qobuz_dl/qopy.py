@@ -20,7 +20,7 @@ from qobuz_dl.exceptions import (
 )
 from qobuz_dl.color import GREEN, YELLOW
 
-RESET = "Reset your credentials with 'qobuz-dl -r'"
+RESET = "Reset your credentials with 'qodl -r'"
 
 # Same location rules as qobuz_dl/cli.py (APPDATA on Windows).
 if os.name == "nt":
@@ -32,7 +32,7 @@ TOKEN_HELP = (
     "Get a fresh token: sign in at play.qobuz.com, play a track, open developer tools (F12),\n"
     "Network tab, filter 'user/login', click the request, Response, copy user_auth_token.\n"
     f"Paste it as the password line in {CONFIG_FILE}\n"
-    "Do NOT use 'qobuz-dl -r' for this: it scrambles whatever you type."
+    "Do NOT use 'qodl -r' for this: it scrambles whatever you type."
 )
 
 

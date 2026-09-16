@@ -1,6 +1,37 @@
+Metadata-Version: 2.4
+Name: qodl
+Version: 0.9.9.10.post1
+Summary: The complete Lossless and Hi-Res music downloader for Qobuz
+Home-page: https://github.com/vitiko98/Qobuz-DL
+Author: Vitiko
+Author-email: vhnz98@gmail.com
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: GNU General Public License (GPL)
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: pathvalidate
+Requires-Dist: requests
+Requires-Dist: mutagen
+Requires-Dist: tqdm
+Requires-Dist: pick==1.6.0
+Requires-Dist: beautifulsoup4
+Requires-Dist: colorama
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: license-file
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
 # qodl
 > **Patched fork (0.9.9.10.post1).** Qobuz stopped accepting email and password logins from this tool, so sign-in now uses a `user_auth_token` copied from the browser. See [Token sign-in](#token-sign-in-patched-fork-windows).
-Search, explore and download Lossless and Hi-Res music from [Qobuz](https://www.qobuz.com/). It *just works*™ (2025).
+Search, explore and download Lossless and Hi-Res music from [Qobuz](https://www.qobuz.com/). It *just works*â„¢ (2025).
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=VZWSWVGZGJRMU&source=url)
 
 ## Features
@@ -19,7 +50,7 @@ Search, explore and download Lossless and Hi-Res music from [Qobuz](https://www.
 
 ## Getting started
 
-> You'll need an **active subscription**. Do **not** `pip install qobuz-dl` from PyPI — that's the old version that can no longer log in. Install this fork from source.
+> You'll need an **active subscription**. Do **not** `pip install qobuz-dl` from PyPI â€” that's the old version that can no longer log in. Install this fork from source.
 
 ### Install (Windows)
 
@@ -45,7 +76,7 @@ python3 -m venv .venv
 
 ### Sign in
 
-This fork uses a browser token instead of email/password — see [Token sign-in](#token-sign-in-patched-fork-windows) below. `qodl -r` still works for the other settings, but don't use it for the token (it hashes what you type).
+This fork uses a browser token instead of email/password â€” see [Token sign-in](#token-sign-in-patched-fork-windows) below. `qodl -r` still works for the other settings, but don't use it for the token (it hashes what you type).
 
 ## Examples
 
