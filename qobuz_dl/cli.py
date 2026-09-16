@@ -101,6 +101,9 @@ def _handle_commands(qobuz, arguments):
 
 
 def _initial_checks():
+    if {"-h", "--help"} & set(sys.argv):
+        sys.exit(qobuz_dl_args().parse_args())
+
     if not os.path.isdir(CONFIG_PATH) or not os.path.isfile(CONFIG_FILE):
         os.makedirs(CONFIG_PATH, exist_ok=True)
         _reset_config(CONFIG_FILE)
